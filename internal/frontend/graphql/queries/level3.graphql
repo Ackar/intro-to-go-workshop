@@ -1,0 +1,9 @@
+query level3 {
+    level3 {
+        client {
+            ...Client
+        }
+        gifUrl
+        error
+    }
+}

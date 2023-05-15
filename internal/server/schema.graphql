@@ -1,0 +1,23 @@
+type Query {
+    clients: [Client!]!
+    level1: [ClientColors!]!
+    level2: [ClientColors!]!
+    level3: [ClientGif!]!
+}
+
+type ClientColors {
+    client: Client!
+    colors: [String!]!
+    error: String
+}
+
+type ClientGif {
+    client: Client!
+    gifUrl: String!
+    error: String
+}
+
+type Client {
+    name: String!
+    avatarUrl: String!
+}

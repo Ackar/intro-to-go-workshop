@@ -1,0 +1,15 @@
+overwrite: true
+schema:
+  - http://localhost:8383/query
+documents:
+  - "graphql/fragments/**/*.graphql"
+  - "graphql/queries/**/*.graphql"
+generates:
+  graphql/index.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-urql"
+    config:
+      withComponent: false
+      withHooks: true

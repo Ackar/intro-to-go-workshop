@@ -1,0 +1,9 @@
+query level2 {
+    level2 {
+        client {
+            ...Client
+        }
+        colors
+        error
+    }
+}

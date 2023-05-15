@@ -1,0 +1,4 @@
+fragment Client on Client {
+    name
+    avatarUrl
+}
