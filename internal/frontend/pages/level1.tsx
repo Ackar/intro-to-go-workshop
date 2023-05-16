@@ -28,9 +28,9 @@ export default function Level1() {
         <div key={e.client.name}>
           <Client client={e.client} />
           <div className="">
-            {e.colors.map((c) => (
+            {e.colors.map((c, idx) => (
               <div
-                key={c}
+                key={idx}
                 className="w-10 h-10 inline-block mx-0.5 shadow"
                 style={{
                   backgroundColor: c,

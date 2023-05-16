@@ -34,5 +34,5 @@ func main() {
 	http.Handle("/query", cors.Default().Handler(&relay.Handler{Schema: schema}))
 
 	log.Println("Listening...")
-	http.ListenAndServe(":8383", nil)
+	http.ListenAndServe(":8080", nil)
 }

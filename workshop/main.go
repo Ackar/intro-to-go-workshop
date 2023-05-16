@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	serverURL := "ws://localhost:8383/ws"
+	serverURL := "wss://workshop.sycl.dev/ws"
 	port := 4242
 
 	proxy, err := tunnel.NewWebsocketClientHTTPProxy(serverURL, port)

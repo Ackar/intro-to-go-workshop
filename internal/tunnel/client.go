@@ -34,6 +34,7 @@ func (p *WebsocketClientHTTPProxy) Run() {
 			continue
 		}
 		fmt.Println("\033[32m🟢 Connected to server, you're ready to Go!\033[0m")
+		fmt.Println("\033[32m→ Go to https://workshop.sycl.dev to visualize your solutions.\033[0m")
 
 		for {
 			_, message, err := conn.ReadMessage()
@@ -47,7 +48,6 @@ func (p *WebsocketClientHTTPProxy) Run() {
 			if err != nil {
 				return
 			}
-			fmt.Println("executing request", req.URL)
 			u, _ := url.Parse(req.URL)
 			u.Host = fmt.Sprintf("localhost:%d", p.localPort)
 			u.Scheme = "http"

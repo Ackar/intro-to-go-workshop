@@ -6,11 +6,15 @@ import (
 	"net/http"
 )
 
-// colors returns a list of 25 colors
+// colors returns a list of 25 colors. The colors can be any string representing
+// a CSS color.
+// Some of the possible formats: "blue", "rgb(42, 42, 42)", // "#FF00FF".
+//
+// Step 1: return an array of 25x the same color (learn about loops and arrays)
+// Step 2: alternate between 2 colors (learn about conditions)
+// Step 3: make it a gradient (learn to build strings)
 func colors() []string {
-	// step 1: return an array of 25x the same color (loop, arrays)
-	// step 2: alternate between 2 colors (conditions)
-	// step 3: make it a gradient (string interpolation)
+	// FIXME
 	var res []string
 	color := "rgb(161, %d, 235)"
 	for i := 0; i < 25; i++ {

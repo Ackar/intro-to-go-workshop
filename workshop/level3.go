@@ -6,15 +6,17 @@ import (
 	"net/http"
 )
 
-// Level3Handler returns a link to your favourite GIF.
+// Level3Handler returns a link to your a GIF.
 // It should return a JSON in the following format:
 //
 //	{
 //		 "gif_url": "URL"
 //	}
+//
+// Step 1: return a static JSON containing a link to your favorite GIF
+// Step 2: fetch a GIF from Giphy and return it
+// Step 3: get the Giphy search string from the "query" query parameter
 func Level3Handler(w http.ResponseWriter, r *http.Request) {
-	// step 1: return a static JSON
-	// step 2: fetch a gif from Giphy and return it
 
 	q := r.URL.Query().Get("query")
 

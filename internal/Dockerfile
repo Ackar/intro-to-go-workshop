@@ -38,10 +38,10 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=frontend-build /app/public ./public
+COPY --from=frontend-build /app/internal/frontend/public ./public
 
-COPY --from=frontend-build --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=frontend-build --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=frontend-build --chown=nextjs:nodejs /app/internal/frontend/.next/standalone ./
+COPY --from=frontend-build --chown=nextjs:nodejs /app/internal/frontend/.next/static ./.next/static
 
 COPY --from=go-build /app/app /app/server
 
@@ -49,4 +49,4 @@ COPY internal/run.sh .
 
 USER nextjs
 
-CMD ["bash", "run.sh"]
+CMD ["/bin/sh", "run.sh"]

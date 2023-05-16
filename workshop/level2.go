@@ -5,7 +5,14 @@ import (
 	"net/http"
 )
 
+// Level2 is about using structs and storing state.
+// Use the struct below to store a state and make colors move!
+//
+// Step 1: make a square move at every invocation (learn about structs)
+// Step 2: use defer to change the state (learn about defer)
+// Step 3: get the color as a constructor parameter (learn how to add parameters to a struct)
 type Level2 struct {
+	// FIXME
 	idx int
 }
 
@@ -16,9 +23,6 @@ func NewLevel2() *Level2 {
 }
 
 func (l *Level2) colors() []string {
-	// step 1: make a square move at every invocation (store state)
-	// step 2: use defer to change the state
-	// step 3: get the color as a constructor parameter
 	var res []string
 	for i := 0; i < 25; i++ {
 		if i == l.idx {
