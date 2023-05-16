@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -15,17 +14,10 @@ import (
 // Step 3: make it a gradient (learn to build strings)
 func colors() []string {
 	// FIXME
-	var res []string
-	color := "rgb(161, %d, 235)"
-	for i := 0; i < 25; i++ {
-		if i%2 == 0 {
-			res = append(res, fmt.Sprintf(color, 100-i*2))
-		} else {
-			res = append(res, fmt.Sprintf(color, 100+i*4))
-		}
-	}
-	return res
+	return nil
 }
+
+// No need to edit below this line
 
 type colorsResponse struct {
 	Colors []string `json:"colors"`

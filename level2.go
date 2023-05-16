@@ -13,7 +13,6 @@ import (
 // Step 3: get the color as a constructor parameter (learn how to add parameters to a struct)
 type Level2 struct {
 	// FIXME
-	idx int
 }
 
 func NewLevel2() *Level2 {
@@ -23,17 +22,11 @@ func NewLevel2() *Level2 {
 }
 
 func (l *Level2) colors() []string {
-	var res []string
-	for i := 0; i < 25; i++ {
-		if i == l.idx {
-			res = append(res, "silver")
-		} else {
-			res = append(res, "blue")
-		}
-	}
-	l.idx = (l.idx + 1) % 25
-	return res
+	// FIXME
+	return nil
 }
+
+// No need to edit below this line
 
 func (l *Level2) Handler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(colorsResponse{
