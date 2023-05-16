@@ -8,15 +8,10 @@ import (
 	"github.com/Ackar/intro-to-go-workshop/internal/tunnel"
 )
 
-func main() {
-	serverURL := "wss://workshop.sycl.dev/ws"
-	port := 4242
+var port = 4242
 
-	proxy, err := tunnel.NewWebsocketClientHTTPProxy(serverURL, port)
-	if err != nil {
-		log.Fatal(err)
-	}
-	go proxy.Run()
+func main() {
+	initProxy() // Proxy to workshop server, do not modify
 
 	http.HandleFunc("/info", InfoHandler)
 	http.HandleFunc("/level1", Level1Handler)
@@ -24,4 +19,14 @@ func main() {
 	http.HandleFunc("/level3", Level3Handler)
 
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+}
+
+func initProxy() {
+	serverURL := "wss://workshop.sycl.dev/ws"
+
+	proxy, err := tunnel.NewWebsocketClientHTTPProxy(serverURL, port)
+	if err != nil {
+		log.Fatal(err)
+	}
+	go proxy.Run()
 }

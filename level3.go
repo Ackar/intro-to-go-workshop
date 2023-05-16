@@ -19,6 +19,7 @@ func Level3Handler(w http.ResponseWriter, r *http.Request) {
 	// FIXME
 }
 
+// Step 2/3 only
 // giphyGif returns the first GIF returns by the given Giphy search
 func giphyGif(search string) (string, error) {
 	req, err := http.NewRequest(http.MethodGet, "https://api.giphy.com/v1/videos/search", nil)

@@ -1,4 +1,4 @@
-# Introduction to Go workshop
+# Introduction to Go
 
 ## Setup
 
@@ -14,7 +14,7 @@ Go through the `levelX.go` files and compare your progress with others.
 
 Each level will give you the opportunity to learn about different aspects of Go:
 - Level 1: basic syntax, loops, conditions and string building
-- Level 2: Structs and defer
+- Level 2: structs and defer
 - Level 3: JSON marshalling/unmarshalling, HTTP servers and clients
 
 Have fun!
