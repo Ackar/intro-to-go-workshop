@@ -10,7 +10,7 @@ export default function Level2() {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 4000);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 

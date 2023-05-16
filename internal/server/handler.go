@@ -5,19 +5,34 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sort"
+	"sync"
+	"time"
 )
 
-type LevelHandler struct {
+type Resolver struct {
 	manager *ClientManager
+
+	level1Mutex       sync.Mutex
+	level1Cache       []clientColors
+	level1RefreshedAt time.Time
+
+	level2Mutex       sync.Mutex
+	level2Cache       []clientColors
+	level2RefreshedAt time.Time
+
+	level3Mutex       sync.Mutex
+	level3Cache       []clientGIF
+	level3RefreshedAt time.Time
 }
 
-func NewLevelHandler(clientManager *ClientManager) *LevelHandler {
-	return &LevelHandler{
+func NewLevelHandler(clientManager *ClientManager) *Resolver {
+	return &Resolver{
 		manager: clientManager,
 	}
 }
 
-func (h *LevelHandler) Clients(ctx context.Context) []ClientInfo {
+func (h *Resolver) Clients(ctx context.Context) []ClientInfo {
 	clients := h.manager.Clients()
 
 	var res []ClientInfo
@@ -38,7 +53,13 @@ type clientColors struct {
 	Error  *string     `json:"error"`
 }
 
-func (h *LevelHandler) Level1(ctx context.Context) ([]clientColors, error) {
+func (h *Resolver) Level1(ctx context.Context) ([]clientColors, error) {
+	h.level1Mutex.Lock()
+	defer h.level1Mutex.Unlock()
+	if time.Since(h.level1RefreshedAt) < 3*time.Second {
+		return h.level1Cache, nil
+	}
+
 	req, err := http.NewRequest(http.MethodGet, "/level1", nil)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request")
@@ -70,10 +91,23 @@ func (h *LevelHandler) Level1(ctx context.Context) ([]clientColors, error) {
 		})
 	}
 
+	sort.Slice(res, func(i, j int) bool {
+		return res[i].Client.Name < res[j].Client.Name
+	})
+
+	h.level1Cache = res
+	h.level1RefreshedAt = time.Now()
+
 	return res, nil
 }
 
-func (h *LevelHandler) Level2(ctx context.Context) ([]clientColors, error) {
+func (h *Resolver) Level2(ctx context.Context) ([]clientColors, error) {
+	h.level2Mutex.Lock()
+	defer h.level2Mutex.Unlock()
+	if time.Since(h.level2RefreshedAt) < 3*time.Second {
+		return h.level2Cache, nil
+	}
+
 	req, err := http.NewRequest(http.MethodGet, "/level2", nil)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request")
@@ -105,6 +139,13 @@ func (h *LevelHandler) Level2(ctx context.Context) ([]clientColors, error) {
 		})
 	}
 
+	sort.Slice(res, func(i, j int) bool {
+		return res[i].Client.Name < res[j].Client.Name
+	})
+
+	h.level2Cache = res
+	h.level2RefreshedAt = time.Now()
+
 	return res, nil
 }
 
@@ -118,7 +159,13 @@ type clientGIF struct {
 	Error  *string
 }
 
-func (h *LevelHandler) Level3(ctx context.Context) ([]clientGIF, error) {
+func (h *Resolver) Level3(ctx context.Context) ([]clientGIF, error) {
+	h.level3Mutex.Lock()
+	defer h.level3Mutex.Unlock()
+	if time.Since(h.level3RefreshedAt) < 3*time.Second {
+		return h.level3Cache, nil
+	}
+
 	req, err := http.NewRequest(http.MethodGet, "/level3?query=gopher", nil)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request")
@@ -149,6 +196,13 @@ func (h *LevelHandler) Level3(ctx context.Context) ([]clientGIF, error) {
 			Error:  errPtr,
 		})
 	}
+
+	sort.Slice(res, func(i, j int) bool {
+		return res[i].Client.Name < res[j].Client.Name
+	})
+
+	h.level3Cache = res
+	h.level3RefreshedAt = time.Now()
 
 	return res, nil
 }
