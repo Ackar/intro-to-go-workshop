@@ -14,7 +14,9 @@ const client = createClient({
 function MyApp({ Component, pageProps }) {
   return (
     <div>
-      <Head></Head>
+      <Head>
+        <title>Go workshop</title>
+      </Head>
       <div className="w-full bg-gray-900 text-center py-5 shadow">
         <img src="/gopher.png" className="h-36 mx-auto" />
         <h1 className="text-2xl text-white w-max mx-auto mt-4">Go Workshop</h1>

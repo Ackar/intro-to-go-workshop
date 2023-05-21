@@ -16,8 +16,9 @@ type ClientInfo struct {
 }
 
 type ClientManager struct {
-	proxyServer *tunnel.WebsocketHTTPProxyServer
-	clientsInfo map[string]*ClientInfo
+	clientsMutex sync.Mutex
+	proxyServer  *tunnel.WebsocketHTTPProxyServer
+	clientsInfo  map[string]*ClientInfo
 }
 
 func NewClientManager(proxyServer *tunnel.WebsocketHTTPProxyServer) *ClientManager {
@@ -47,21 +48,25 @@ func (m *ClientManager) ClientConnected(sessionID string) {
 		log.Printf("error decoding client info: %v", err)
 		return
 	}
-	// TODO: mutex
+
+	m.clientsMutex.Lock()
 	m.clientsInfo[sessionID] = &info
+	m.clientsMutex.Unlock()
 	fmt.Println("got client info", info)
 }
 
 func (m *ClientManager) ClientDisconnected(sessionID string) {
-	// TODO: mutex
+	m.clientsMutex.Lock()
 	delete(m.clientsInfo, sessionID)
+	m.clientsMutex.Unlock()
 	fmt.Println("deleted client", sessionID)
 }
 
 func (m *ClientManager) Clients() map[string]*ClientInfo {
 	res := make(map[string]*ClientInfo)
 
-	// TODO: mutex
+	m.clientsMutex.Lock()
+	defer m.clientsMutex.Unlock()
 	for k, v := range m.clientsInfo {
 		res[k] = v
 	}
@@ -77,16 +82,18 @@ type ClientQueryResult struct {
 func (m *ClientManager) QueryAll(r *http.Request) map[string]ClientQueryResult {
 	res := make(map[string]ClientQueryResult)
 
+	var mu sync.Mutex
 	var wg sync.WaitGroup
 	for sessionID := range m.clientsInfo {
 		wg.Add(1)
 		go func(sessionID string) {
 			resp, err := m.proxyServer.ExecuteRequest(sessionID, r)
-			// TODO: mutex
+			mu.Lock()
 			res[sessionID] = ClientQueryResult{
 				resp: resp,
 				err:  err,
 			}
+			mu.Unlock()
 			wg.Done()
 		}(sessionID)
 	}

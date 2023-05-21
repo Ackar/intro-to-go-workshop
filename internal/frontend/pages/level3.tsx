@@ -1,4 +1,6 @@
 import { Client } from "@/components/client";
+import ClientError from "@/components/clientError";
+import NoParticipants from "@/components/noParticipants";
 import { useLevel3Query } from "@/graphql";
 import { useEffect } from "react";
 
@@ -24,9 +26,11 @@ export default function Level2() {
 
   return (
     <div>
+      {data?.level3.length === 0 && <NoParticipants />}
       {data?.level3.map((e) => (
         <div key={e.client.name}>
           <Client client={e.client} />
+          {e.error && <ClientError error={e.error} />}
           <div className="">
             <img src={e.gifUrl} className="h-36" />
           </div>

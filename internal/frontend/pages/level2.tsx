@@ -1,4 +1,6 @@
 import { Client } from "@/components/client";
+import ClientError from "@/components/clientError";
+import NoParticipants from "@/components/noParticipants";
 import { useLevel2Query } from "@/graphql";
 import { useEffect } from "react";
 
@@ -24,10 +26,12 @@ export default function Level2() {
 
   return (
     <div>
+      {data?.level2.length === 0 && <NoParticipants />}
       {data?.level2.map((e) => (
         <div key={e.client.name}>
           <Client client={e.client} />
           <div className="">
+            {e.error && <ClientError error={e.error} />}
             {e.colors.map((c, idx) => (
               <div
                 key={idx}

@@ -20,7 +20,7 @@ type WebsocketHTTPProxyServer struct {
 
 func NewWebsocketHTTPProxyServer() *WebsocketHTTPProxyServer {
 	m := melody.New()
-	m.Config.MaxMessageSize = 100000
+	m.Config.MaxMessageSize = 16000
 
 	p := &WebsocketHTTPProxyServer{
 		melody:            m,
