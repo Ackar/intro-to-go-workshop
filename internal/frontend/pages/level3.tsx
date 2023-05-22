@@ -27,15 +27,17 @@ export default function Level2() {
   return (
     <div>
       {data?.level3.length === 0 && <NoParticipants />}
-      {data?.level3.map((e) => (
-        <div key={e.client.name}>
-          <Client client={e.client} />
-          {e.error && <ClientError error={e.error} />}
-          <div className="">
-            <img src={e.gifUrl} className="h-36" />
+      <div className="flex flex-row flex-wrap gap-3">
+        {data?.level3.map((e) => (
+          <div key={e.client.name}>
+            <Client client={e.client} />
+            {e.error && <ClientError error={e.error} />}
+            <div className="">
+              <img src={e.gifUrl} className="h-36" />
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -13,7 +14,9 @@ import (
 type WebsocketHTTPProxyServer struct {
 	melody            *melody.Melody
 	respChans         map[string]chan *HTTPResponse
+	respChansMutex    sync.Mutex
 	sessions          map[string]*melody.Session
+	sessionsMutex     sync.Mutex
 	connectHandler    func(string)
 	disconnectHandler func(string)
 }
@@ -34,13 +37,17 @@ func NewWebsocketHTTPProxyServer() *WebsocketHTTPProxyServer {
 	m.HandleConnect(func(s *melody.Session) {
 		id := uuid.New().String()
 		s.Set("id", id)
+		p.sessionsMutex.Lock()
 		p.sessions[id] = s
+		p.sessionsMutex.Unlock()
 		go p.connectHandler(id)
 	})
 
 	m.HandleDisconnect(func(s *melody.Session) {
 		id, _ := s.Keys["id"].(string)
+		p.sessionsMutex.Lock()
 		delete(p.sessions, id)
+		p.sessionsMutex.Unlock()
 		go p.disconnectHandler(id)
 	})
 
@@ -72,9 +79,13 @@ func (p *WebsocketHTTPProxyServer) ExecuteRequest(sessionID string, req *http.Re
 	respChan := make(chan *HTTPResponse)
 	defer func() {
 		close(respChan)
+		p.respChansMutex.Lock()
 		delete(p.respChans, proxyReq.ID)
+		p.respChansMutex.Unlock()
 	}()
+	p.respChansMutex.Lock()
 	p.respChans[proxyReq.ID] = respChan
+	p.respChansMutex.Unlock()
 
 	select {
 	case resp := <-respChan:
@@ -88,7 +99,9 @@ func (p *WebsocketHTTPProxyServer) HandleMessage(s *melody.Session, msg []byte) 
 	var resp HTTPResponse
 	json.Unmarshal(msg, &resp)
 
+	p.respChansMutex.Lock()
 	respChan, ok := p.respChans[resp.ID]
+	p.respChansMutex.Unlock()
 	if !ok {
 		return
 	}

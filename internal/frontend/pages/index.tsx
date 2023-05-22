@@ -22,7 +22,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-row justify-center">
+    <div className="flex flex-row justify-center gap-3 flex-wrap">
       {data?.clients.length === 0 && <NoParticipants />}
       {data?.clients.map((client) => (
         <div
