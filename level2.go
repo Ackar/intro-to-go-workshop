@@ -21,14 +21,14 @@ type Level2 struct {
 	// FIXME
 }
 
-func NewLevel2() *Level2 {
+func NewLevel2( /* FIXME (Step 3), see main.go to add parameter */ ) *Level2 {
 	return &Level2{
-		// FIXME
+		// FIXME: Initialize your value here
 	}
 }
 
 func (l *Level2) colors() []string {
-	// FIXME
+	// FIXME: For an easy start, copy your code from level 1
 	return nil
 }
 

@@ -17,18 +17,24 @@ import (
 // to send data back to the client and the `json` package to format your JSON.
 // See https://pkg.go.dev/encoding/json (hint: look at NewEncoder or Marshal).\
 //
-// Step 2: fetch a GIF from Giphy and return it. See the giphyGIF function below.
+// Step 2: fetch a GIF from Giphy and return it. See the gifURL function below.
 //
-// Step 3: get the Giphy search string from the "query" query parameter.
+// Step 3: Get the "query" query parameter from the HTTP request and use it to
+// call the gifURL function.
+// The request uses the following format:
+//
+//	/level3?query=search
+//
+// This means you can get the query and use it in your search!
 // The http.Request parameter contains information about the current HTTP
-// request, use it to extract query parameters!
+// request, look into r.URL to find the parameter!
 func Level3Handler(w http.ResponseWriter, r *http.Request) {
 	// FIXME
 }
 
 // Step 2/3 only
-// giphyGIF returns the first GIF returned by the given Giphy search
-func giphyGIF(search string) (string, error) {
+// gifURL returns the first GIF returned by the given Giphy search
+func gifURL(search string) (string, error) {
 	req, err := http.NewRequest(http.MethodGet, "https://api.giphy.com/v1/videos/search", nil)
 	if err != nil {
 		return "", fmt.Errorf("error creating request: %w", err)
@@ -48,11 +54,13 @@ func giphyGIF(search string) (string, error) {
 	// The result is in the following format (relevant part only):
 	// {
 	// 	"data": [
-	// 		"images": {
-	// 			"fixed_width": {
-	// 				"webp": "URL"
+	//		{
+	// 			"images": {
+	// 				"fixed_width": {
+	// 					"webp": "URL"
+	// 				}
 	// 			}
-	// 		}
+	//		}
 	// 	]
 	// }
 

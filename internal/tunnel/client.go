@@ -35,6 +35,7 @@ func (p *WebsocketClientHTTPProxy) Run() {
 		}
 		fmt.Println("\033[32m🟢 Connected to server, you're ready to Go!\033[0m")
 		fmt.Println("\033[32m→ Go to https://workshop.sycl.dev to visualize your solutions.\033[0m")
+		fmt.Println("\033[34m⚠️ Don't forget to restart your program to see changes ⚠️ \033[0m")
 
 		for {
 			_, message, err := conn.ReadMessage()
