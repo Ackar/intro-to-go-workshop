@@ -42,6 +42,10 @@ func (h *Resolver) Clients(ctx context.Context) []ClientInfo {
 		res = append(res, *cl)
 	}
 
+	sort.Slice(res, func(i, j int) bool {
+		return res[i].Name < res[j].Name
+	})
+
 	return res
 }
 
