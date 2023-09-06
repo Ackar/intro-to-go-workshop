@@ -16,6 +16,7 @@ function MyApp({ Component, pageProps }) {
     <div>
       <Head>
         <title>Go workshop</title>
+        <link rel="icon" type="image/png" href="/favicon.png" />
       </Head>
       <div className="w-full bg-gray-900 text-center py-5 shadow">
         <img src="/gopher.png" className="h-36 mx-auto" />

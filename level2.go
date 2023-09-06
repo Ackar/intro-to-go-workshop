@@ -9,8 +9,14 @@ import (
 // Use the struct below to store a state and make colors move!
 //
 // Step 1: make a square move at every invocation (learn about structs)
-// Step 2: use defer to change the state (learn about defer)
+// Add a field to the `Level2` struct and update it in the `colors` function.
+//
+// Step 2: use defer to change the state (learn about defer).
+// defer is an effective way of executing logic at the end of functions, try
+// using it to update your state!
+//
 // Step 3: get the color as a constructor parameter (learn how to add parameters to a struct)
+// Update the `NewLevel2` function to accept a color parameter.
 type Level2 struct {
 	// FIXME
 }

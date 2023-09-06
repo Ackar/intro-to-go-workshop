@@ -5,23 +5,30 @@ import (
 	"net/http"
 )
 
-// Level3Handler returns a link to your a GIF.
-// It should return a JSON in the following format:
+// Level3Handler is a HTTP handler that returns a link to a GIF in the JSON
+// format.
+// The returned JSON should have the following format:
 //
 //	{
 //		 "gif_url": "URL"
 //	}
 //
-// Step 1: return a static JSON containing a link to your favorite GIF
-// Step 2: fetch a GIF from Giphy and return it
-// Step 3: get the Giphy search string from the "query" query parameter
+// Step 1: return a static JSON containing a link to your favorite GIF. Use `w`
+// to send data back to the client and the `json` package to format your JSON.
+// See https://pkg.go.dev/encoding/json (hint: look at NewEncoder or Marshal).\
+//
+// Step 2: fetch a GIF from Giphy and return it. See the giphyGIF function below.
+//
+// Step 3: get the Giphy search string from the "query" query parameter.
+// The http.Request parameter contains information about the current HTTP
+// request, use it to extract query parameters!
 func Level3Handler(w http.ResponseWriter, r *http.Request) {
 	// FIXME
 }
 
 // Step 2/3 only
-// giphyGif returns the first GIF returns by the given Giphy search
-func giphyGif(search string) (string, error) {
+// giphyGIF returns the first GIF returned by the given Giphy search
+func giphyGIF(search string) (string, error) {
 	req, err := http.NewRequest(http.MethodGet, "https://api.giphy.com/v1/videos/search", nil)
 	if err != nil {
 		return "", fmt.Errorf("error creating request: %w", err)
